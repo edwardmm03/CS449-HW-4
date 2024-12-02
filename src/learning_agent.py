@@ -9,6 +9,7 @@ from tf_agents.replay_buffers.tf_uniform_replay_buffer import (
 from tf_agents.trajectories import from_transition
 from tf_agents.utils import common
 from typing import Union
+from tf_agents.environments import suite_gym
 import numpy as np
 
 
@@ -18,8 +19,8 @@ class LearningAgent:
 
     def __init__(self) -> None:
         # TODO: need to add environments
-        self.env = TFPyEnvironment(None)
-        self.eval_env = TFPyEnvironment(None)
+        self.env = TFPyEnvironment(suite_gym.load("CartPole-v0"))
+        self.eval_env = TFPyEnvironment(suite_gym.load("CartPole-v0"))
 
         net: QNetwork = QNetwork(
             input_tensor_spec=self.env.observation_spec(),
@@ -57,3 +58,8 @@ class LearningAgent:
             )
             for element in experience.take(1):
                 loss = self.agent.train(element[0])
+
+
+if __name__ == "__main__":
+    agent = LearningAgent()
+    agent.train(1)
