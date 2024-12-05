@@ -12,6 +12,8 @@ from typing import Union
 from tf_agents.environments import suite_gym
 import numpy as np
 
+TRAINING_GAMES = 1
+
 
 class LearningAgent:
     env: Union[TFPyEnvironment, None] = None
@@ -59,7 +61,17 @@ class LearningAgent:
             for element in experience.take(1):
                 loss = self.agent.train(element[0])
 
+    def run_game(self, render=True) -> None:
+        time_step = self.eval_env.reset()
+        while not time_step.is_last():
+            time_step = self.eval_env.step(
+                self.agent.policy.action(time_step).action
+            )
+            if render:
+                self.eval_env.render(mode="human")
+
 
 if __name__ == "__main__":
     agent = LearningAgent()
-    agent.train(1)
+    agent.train(TRAINING_GAMES)
+    agent.run_game()
