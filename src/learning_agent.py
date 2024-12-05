@@ -20,7 +20,6 @@ class LearningAgent:
     agent: Union[DqnAgent, None] = None
 
     def __init__(self) -> None:
-        # TODO: need to add environments
         self.env = TFPyEnvironment(suite_gym.load("CartPole-v0"))
         self.eval_env = TFPyEnvironment(suite_gym.load("CartPole-v0"))
 
