@@ -13,7 +13,7 @@ from pathlib import Path
 import tensorflow as tf
 import numpy as np
 
-TRAINING_GAMES = 10
+TRAINING_GAMES = 1000
 
 
 class LearningAgent:
@@ -45,7 +45,7 @@ class LearningAgent:
         self.replay_buffer: TFUniformReplayBuffer = TFUniformReplayBuffer(
             data_spec=self.agent.collect_data_spec,
             batch_size=self.env.batch_size,
-            max_length=100000,
+            max_length=1000000,
         )
         self.train_checkpointer = common.Checkpointer(
             ckpt_dir=file,
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     agent = LearningAgent(
         Path(__file__).parent.parent.joinpath("saves").joinpath("agent")
     )
-    # for i in range(100):
-    # agent.train(TRAINING_GAMES)
-    # agent.save()
+    for i in range(100):
+        agent.train(TRAINING_GAMES // 100)
+        agent.save()
     agent.run_game()
