@@ -55,7 +55,7 @@ class LearningAgent:
             replay_buffer=self.replay_buffer,
             global_step=self.global_step,
         )
-        self.train_checkpointer.initialize_or_restore()
+        self.train_checkpointer.initialize_or_restore().expect_partial()
 
     def train(self, epoch: int) -> None:
         for _ in range(epoch):
@@ -91,6 +91,7 @@ if __name__ == "__main__":
     agent = LearningAgent(
         Path(__file__).parent.parent.joinpath("saves").joinpath("agent")
     )
-    agent.train(TRAINING_GAMES)
-    agent.save()
+    # for i in range(100):
+    # agent.train(TRAINING_GAMES)
+    # agent.save()
     agent.run_game()
