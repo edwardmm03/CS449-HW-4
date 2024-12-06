@@ -55,7 +55,7 @@ class LearningAgent:
             replay_buffer=self.replay_buffer,
             global_step=self.global_step,
         )
-        self.train_checkpointer.initialize_or_restore().expect_partial()
+        self.train_checkpointer.initialize_or_restore()
 
     def train(self, epoch: int) -> None:
         for _ in range(epoch):
