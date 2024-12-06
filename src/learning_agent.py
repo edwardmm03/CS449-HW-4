@@ -11,6 +11,7 @@ from typing import Union
 from tf_agents.environments import suite_gym
 from pathlib import Path
 import tensorflow as tf
+from time import sleep
 import numpy as np
 
 TRAINING_GAMES = 1000
@@ -77,11 +78,11 @@ class LearningAgent:
     def run_game(self, render=True) -> None:
         time_step = self.eval_env.reset()
         while not time_step.is_last():
+            if render:
+                self.eval_env.render(mode="human")
             time_step = self.eval_env.step(
                 self.agent.policy.action(time_step).action
             )
-            if render:
-                self.eval_env.render(mode="human")
 
     def save(self) -> None:
         self.train_checkpointer.save(self.global_step)
@@ -94,4 +95,6 @@ if __name__ == "__main__":
     for i in range(100):
         agent.train(TRAINING_GAMES // 100)
         agent.save()
-    agent.run_game()
+    while True:
+        sleep(1)
+        agent.run_game()
